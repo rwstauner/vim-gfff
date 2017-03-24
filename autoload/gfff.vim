@@ -20,8 +20,21 @@ let s:commands = {
   \ '<C-w>gf':    'tab split',
 \ }
 
+function! s:target(mode)
+  if a:mode == 'v'
+    let reg = 'g'
+    let old = getreg(reg)
+    exe 'normal! gv"' . reg . 'y'
+    let sel = getreg(reg)
+    call setreg(reg, old)
+    return sel
+  endif
+
+  return expand("<cfile>")
+endfunction
+
 function! gfff#open(map, mode, ...)
-  let l:file = a:0 ? a:1 : expand("<cfile>")
+  let l:file = a:0 ? a:1 : s:target(a:mode)
   let l:found = gfff#find(l:file)
   if strlen(l:found)
     exe s:commands[a:map] fnameescape(l:found)

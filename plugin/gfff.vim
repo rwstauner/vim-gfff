@@ -22,6 +22,7 @@ let s:maps = [
 
 let s:modes = [
   \ 'n',
+  \ 'v',
 \ ]
 
 function s:template(str, vars)
