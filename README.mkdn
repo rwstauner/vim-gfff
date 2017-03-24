@@ -1,0 +1,61 @@
+# gfff - "goto first found file"
+
+A simple vim plugin to try harder to find the **file** under the cursor.
+
+Vim already supports looking for the file under the cursor in `'path'`
+with `gf` (and split and tab variants).
+
+However these can open directories (which I find less useful in this context)
+and sometimes additional modifications are needed to find the correct file.
+
+This plugin uses `findfile()` which utilizes `'suffixesadd'`
+and only returns files.
+
+## Mappings
+
+This plugin will overwrite the default mappings
+(`gf`, `<C-w>f`, `<C-w><C-f>`, `<C-w>gf`)
+to utilize this "improved" file finding.
+
+NOTE: There are several other plugins that redefine `gf`
+so you may wish to define your own mappings and/or use this plugin
+conditionally based on filetype.
+
+To define your own mappings you can link to
+
+- `<Plug>gfff_gf`
+- `<Plug>gfff_<C-w>f`
+- `<Plug>gfff_<C-w><C-f>`
+- `<Plug>gfff_<C-w>gf`
+
+For example:
+
+    nmap <Leader>gf <Plug>gfff_gf
+
+## Options
+
+These options can be set as buffer or global variables.
+Buffer variables take precedence.
+
+- `gfff_remove_leading_dot_slash`
+
+    If set to `1` (the default) after failing to find the original file
+    it willl remove a leading `./` (if present) and try again.
+
+- `gfff_use_includeexpr`
+
+    If set to `1` (the default) after failling to find the original file
+    it will apply `'includeexpr'` and try again.
+
+- `gfff_includeexprs`
+
+    A list of additional adjustment expressions to be attempted.
+    These should be strings (passed to `eval()`) that operate on `v:fname`.
+
+        let g:gfff_includeexprs = [ "toupper(v:fname)", "v:fname . '.md'" ]
+
+## License
+
+Copyright © 2017 Randy Stauner.
+Distributed under the same terms as Vim itself.
+See `:help license`.
